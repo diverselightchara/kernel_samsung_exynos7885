@@ -1950,6 +1950,12 @@ err_prepare:
 		/* video mode should keep previous buffer object */
 		if (decon->lcd_info->mode == DECON_MIPI_COMMAND_MODE)
 			decon_signal_fence(decon);
+		else
+			/*
+			 * Return the timeline slot reserved by decon_create_fence()
+			 * for a configuration that will never be submitted.
+			 */
+			decon->timeline_max--;
 		sync_fence_put(fence);
 		put_unused_fd(win_data->fence);
 	}
